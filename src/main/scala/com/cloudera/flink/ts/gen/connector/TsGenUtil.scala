@@ -2,31 +2,39 @@ package com.cloudera.flink.ts.gen.connector
 
 import be.cetic.tsimulus.Utils
 import be.cetic.tsimulus.config.Configuration
-import com.cloudera.flink.ts.gen.connector.utils.DataGenUtil
 import com.github.nscala_time.time.Imports.DateTimeFormat
-import org.apache.avro.generic.GenericRecord
-import spray.json._
 import io.confluent.avro.random.generator.Generator
+import org.apache.avro.generic.GenericRecord
 import org.apache.flink.streaming.api.functions.source.SourceFunction
-import org.apache.flink.table.api.DataTypes
-import org.apache.flink.table.api.DataTypes.BIGINT
 import org.apache.flink.table.catalog.Column
-import org.apache.flink.table.data.{GenericRowData, RowData}
-import org.apache.flink.table.types.DataType
-import org.apache.flink.table.types.logical.{LogicalType, LogicalTypeRoot}
+import org.apache.flink.table.data.{GenericRowData, RowData, StringData}
+import org.apache.flink.table.types.logical.LogicalTypeRoot
+import spray.json._
+
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
+import java.time.{Instant, ZoneId}
+import java.util.{Date, Locale}
+
 
 object TsGenUtil {
 
   val dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS")
+  val FORMATTER =
+    new DateTimeFormatterBuilder()
+      // Pattern was taken from java.sql.Timestamp#toString
+      .appendPattern("yyyy-MM-dd HH:mm:ss.SSS")
+      .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
+      .toFormatter(Locale.US);
 
   def getConfig(content: String) = {
     Configuration(content.parseJson)
   }
 
-  def generateRecord (config: Configuration,
-                      aGenerator: Generator,
-                      columns: java.util.List[Column],
-                      ctx: SourceFunction.SourceContext[RowData]) = {
+  def generateRecord(config: Configuration,
+                     aGenerator: Generator,
+                     columns: java.util.List[Column],
+                     ctx: SourceFunction.SourceContext[RowData]) = {
 
     import scala.collection.JavaConverters._
 
@@ -34,16 +42,33 @@ object TsGenUtil {
       e => {
         val row = new GenericRowData(columns.size)
         val genericRecord = aGenerator.generate().asInstanceOf[GenericRecord]
+        genericRecord.put(e._2, e._3)
+
         columns.asScala.zipWithIndex.foreach {
           case (column: Column, index: Int) => {
-              column.getDataType.getLogicalType.getTypeRoot match {
-                case LogicalTypeRoot.INTEGER => row.setField(index, genericRecord.get(column.getName).asInstanceOf[Int]);
-              }
+            column.getDataType.getLogicalType.getTypeRoot match {
+              case LogicalTypeRoot.CHAR => row.setField(index, StringData.fromString(genericRecord.get(column.getName).asInstanceOf[String]));
+              case LogicalTypeRoot.VARCHAR => row.setField(index, StringData.fromString(genericRecord.get(column.getName).asInstanceOf[String]));
+              case LogicalTypeRoot.BOOLEAN => row.setField(index, genericRecord.get(column.getName).asInstanceOf[Boolean].booleanValue);
+
+              case LogicalTypeRoot.INTEGER => row.setField(index, genericRecord.get(column.getName).asInstanceOf[Int]);
+              case LogicalTypeRoot.BIGINT => row.setField(index, genericRecord.get(column.getName).asInstanceOf[BigInt]);
+              case LogicalTypeRoot.FLOAT => row.setField(index, genericRecord.get(column.getName).asInstanceOf[Float]);
+              case LogicalTypeRoot.DOUBLE => row.setField(index, genericRecord.get(column.getName).asInstanceOf[Double]);
+
+              case LogicalTypeRoot.DATE => (Date.from(Instant.from(FORMATTER.withZone(ZoneId.systemDefault())
+                                                .parse(genericRecord.get(column.getName).asInstanceOf[String]))).getTime
+                                             / (86400 * 1000))
+
+              case LogicalTypeRoot.TIMESTAMP_WITH_LOCAL_TIME_ZONE => Instant.from(FORMATTER.withZone(ZoneId.systemDefault())
+                                                                            .parse(genericRecord.get(column.getName).asInstanceOf[String]))
+
+              case LogicalTypeRoot.TIMESTAMP_WITHOUT_TIME_ZONE => Instant.from(FORMATTER.withZone(ZoneId.systemDefault())
+                                                                         .parse(genericRecord.get(column.getName).asInstanceOf[String]))
+
+            }
           }
         }
-        genericRecord.put(e._2, e._3)
-        println(DataGenUtil.toPrettyFormat(genericRecord.toString))
-        println(e._1 + ";" + dtf.print(e._1) + ";" + e._2 + ";" + e._3)
         ctx.collect(row)
       }
     }
