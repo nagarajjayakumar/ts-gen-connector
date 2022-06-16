@@ -6,20 +6,22 @@ import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.connector.source.ScanTableSource;
 import org.apache.flink.table.connector.source.SourceFunctionProvider;
+import org.apache.flink.table.types.DataType;
 
 import java.util.List;
+import java.util.Map;
 
 public class TimeSeriesGeneratorTableSource implements ScanTableSource {
 
     private final TimeSeriesGeneratorSourceOptions options;
-    private final List<Column> columns;
+    private final Map<String, DataType> physicalColumnNameToDataTypeMap;
 
     public TimeSeriesGeneratorTableSource(
             TimeSeriesGeneratorSourceOptions options,
-            List<Column> columns
+            Map<String, DataType> physicalColumnNameToDataTypeMap
     ) {
         this.options = options;
-        this.columns = columns;
+        this.physicalColumnNameToDataTypeMap = physicalColumnNameToDataTypeMap;
     }
 
 
@@ -31,13 +33,13 @@ public class TimeSeriesGeneratorTableSource implements ScanTableSource {
     @Override
     public ScanRuntimeProvider getScanRuntimeProvider(ScanContext ctx) {
         boolean bounded = false;
-        final TimeSeriesGeneratorSource source = new TimeSeriesGeneratorSource(options, columns);
+        final TimeSeriesGeneratorSource source = new TimeSeriesGeneratorSource(options, physicalColumnNameToDataTypeMap);
         return SourceFunctionProvider.of(source, bounded);
     }
 
     @Override
     public DynamicTableSource copy() {
-        return new TimeSeriesGeneratorTableSource(options, columns);
+        return new TimeSeriesGeneratorTableSource(options, physicalColumnNameToDataTypeMap);
     }
 
     @Override

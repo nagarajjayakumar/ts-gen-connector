@@ -13,10 +13,7 @@ import org.apache.flink.table.factories.FactoryUtil;
 import org.apache.flink.table.types.DataType;
 import org.apache.flink.table.types.logical.LogicalTypeRoot;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import java.util.stream.Collectors;
 
@@ -89,6 +86,9 @@ public class TimeSeriesGeneratorTableSourceFactory implements DynamicTableSource
                         .filter(column -> column.isPhysical())
                         .collect(Collectors.toList());
 
+        Map<String, DataType> physicalColumnNameToDataTypeMap = physicalColumns.stream().collect(
+                Collectors.toMap(Column::getName, Column::getDataType));
+
         int fieldCount = physicalColumns.size();
         String[][] fieldExpressions = new String[fieldCount][];
 
@@ -97,7 +97,7 @@ public class TimeSeriesGeneratorTableSourceFactory implements DynamicTableSource
             DataType dataType = physicalColumns.get(i).getDataType();
             validateDataType(fieldName, dataType);
         }
-        return new TimeSeriesGeneratorTableSource(options, physicalColumns);
+        return new TimeSeriesGeneratorTableSource(options, physicalColumnNameToDataTypeMap);
     }
 
     private void validateDataType(String fieldName, DataType dataType) {

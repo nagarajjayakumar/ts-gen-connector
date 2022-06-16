@@ -9,42 +9,45 @@ import org.apache.commons.io.FileUtils;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.table.catalog.Column;
+import org.apache.flink.table.catalog.ResolvedSchema;
 import org.apache.flink.table.data.RowData;
+import org.apache.flink.table.types.DataType;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
     private final TimeSeriesGeneratorSourceOptions options;
-    private final List<Column> columns;
+    private final Map<String, DataType> physicalColumnNameToDataTypeMap;
 
-    private transient Configuration tsSchemaConfiguration;
-    private transient Generator avroGenerator;
+    private transient volatile Configuration tsSchemaConfiguration;
+    private transient volatile Generator avroGenerator;
 
-    private final long seed = 100L;
-    private final long generation = 10000L;
+    private transient volatile long seed = 100L;
+    private transient volatile long generation = 10000L;
 
     private transient volatile boolean running = false;
 
     public TimeSeriesGeneratorSource (
             TimeSeriesGeneratorSourceOptions options,
-            List<Column> columns
+            Map<String, DataType> physicalColumnNameToDataTypeMap
     ) {
         this.options = options;
-        this.columns = columns;
+        this.physicalColumnNameToDataTypeMap = physicalColumnNameToDataTypeMap;
     }
 
     @Override
     public void run(SourceFunction.SourceContext<RowData> ctx) throws Exception {
         init();
         running = true;
-
         while (running) {
             // Trigger some TSIMULUS api to generate the records
-            TsGenUtil.generateRecord(tsSchemaConfiguration, avroGenerator, columns, ctx);
+            TsGenUtil.generateRecord(tsSchemaConfiguration, avroGenerator, physicalColumnNameToDataTypeMap, ctx);
 
         }
     }
