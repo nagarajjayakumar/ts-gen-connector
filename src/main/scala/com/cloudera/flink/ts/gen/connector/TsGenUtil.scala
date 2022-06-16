@@ -66,6 +66,8 @@ object TsGenUtil {
               case LogicalTypeRoot.TIMESTAMP_WITHOUT_TIME_ZONE => Instant.from(FORMATTER.withZone(ZoneId.systemDefault())
                                                                          .parse(genericRecord.get(column.getName).asInstanceOf[String]))
 
+              case _ => throw new RuntimeException("Unsupported Data Type")
+
             }
           }
         }

@@ -26,7 +26,7 @@ public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
 
     private final long seed = 100L;
     private final long generation = 10000L;
-    
+
     private transient volatile boolean running = false;
 
     public TimeSeriesGeneratorSource (
@@ -43,7 +43,7 @@ public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
         running = true;
 
         while (running) {
-            // Trigger some IMAP request to force the server to send a notification
+            // Trigger some TSIMULUS api to generate the records
             TsGenUtil.generateRecord(tsSchemaConfiguration, avroGenerator, columns, ctx);
 
         }
