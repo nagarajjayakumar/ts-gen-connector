@@ -1,0 +1,8 @@
+com/cloudera/flink/ts/gen/connector/FlinkFakerLookupFunction.class
+com/cloudera/flink/ts/gen/connector/utils/DataGenUtil.class
+com/cloudera/flink/ts/gen/connector/FakerUtils$1.class
+com/cloudera/flink/ts/gen/connector/FlinkFakerGenerator.class
+com/cloudera/flink/ts/gen/connector/FlinkFakerTableSourceFactory.class
+com/cloudera/flink/ts/gen/connector/FakerUtils.class
+com/cloudera/flink/ts/gen/connector/FlinkFakerTableSource$1.class
+com/cloudera/flink/ts/gen/connector/FlinkFakerTableSource.class
