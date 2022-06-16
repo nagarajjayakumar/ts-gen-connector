@@ -1,1 +1,1 @@
-com.cloudera.flink.ts.gen.connector.TimeSeriesGeneratorSourceFactory
+com.cloudera.flink.ts.gen.connector.TimeSeriesGeneratorTableSourceFactory

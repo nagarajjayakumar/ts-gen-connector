@@ -1,5 +1,6 @@
 package com.cloudera.flink.ts.gen.connector;
 
+import be.cetic.tsimulus.Utils;
 import be.cetic.tsimulus.config.Configuration;
 import io.confluent.avro.random.generator.Generator;
 import com.cloudera.flink.ts.gen.connector.common.TimeSeriesGeneratorSourceOptions;
@@ -61,8 +62,8 @@ public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
 
         while (running) {
             // Trigger some IMAP request to force the server to send a notification
-            folder.getMessageCount();
-            Thread.sleep(250);
+            TsGenUtil.generateRecord(tsSchemaConfiguration, avroGenerator, columns, ctx);
+
         }
     }
 
