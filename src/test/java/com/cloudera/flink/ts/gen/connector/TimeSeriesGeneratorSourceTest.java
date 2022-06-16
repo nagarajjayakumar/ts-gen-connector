@@ -24,7 +24,7 @@ public class TimeSeriesGeneratorSourceTest {
                         + "    user_id STRING, \n"
                         + "    purchase_id BIGINT, \n"
                         + "    store_id BIGINT, \n"
-                        + "    torque BIGINT \n"
+                        + "    torque DOUBLE \n"
                         + ") WITH (\n"
                         + "  'connector' = 'ts_gen', \n"
                         + "  'avro_schema_file_name' = 'transactions.avro',\n"
@@ -33,7 +33,7 @@ public class TimeSeriesGeneratorSourceTest {
                         + "  'ts_schema_location' = '/Users/njayakumar/Desktop/ak/naga/workspace/demos/ts-gen-connector/src/main/resources/' \n"
                         + ")");
 
-        TableResult tableResult = tEnv.executeSql("SELECT transaction_id, torque FROM server_logs");
+        TableResult tableResult = tEnv.executeSql("SELECT * FROM server_logs");
 
         CloseableIterator<Row> collect = tableResult.collect();
 
@@ -43,6 +43,8 @@ public class TimeSeriesGeneratorSourceTest {
         System.out.println(row2);
         Row row3 = collect.next();
         System.out.println(row3);
+
+
     }
 
 

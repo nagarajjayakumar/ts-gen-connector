@@ -87,7 +87,12 @@ public class TimeSeriesGeneratorTableSourceFactory implements DynamicTableSource
                         .collect(Collectors.toList());
 
         Map<String, DataType> physicalColumnNameToDataTypeMap = physicalColumns.stream().collect(
-                Collectors.toMap(Column::getName, Column::getDataType));
+                Collectors.toMap(Column::getName,
+                                Column::getDataType,
+                                (u, v) -> {
+                                    throw new IllegalStateException(String.format("Duplicate key %s", u));
+                                },
+                                LinkedHashMap::new));
 
         int fieldCount = physicalColumns.size();
         String[][] fieldExpressions = new String[fieldCount][];

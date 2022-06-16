@@ -91,7 +91,7 @@ object TsGenUtil extends Serializable {
       e => {
         val row = new GenericRowData(physicalColumnNameToDataTypeMap.size)
         val genericRecord = aGenerator.generate().asInstanceOf[GenericRecord]
-        genericRecord.put(e._2, 1000L)
+        genericRecord.put(e._2, e._3)
 
         physicalColumnNameToDataTypeMap.asScala.zipWithIndex.foreach {
           case ((columnName: String, columnDataType: DataType) , index: Int) => {

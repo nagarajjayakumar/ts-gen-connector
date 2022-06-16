@@ -29,7 +29,7 @@
     {"name": "purchase_id", "type": {
       "type": "long",
       "arg.properties": {
-        "iteration": { "start": 0 }
+        "iteration": { "start": 1 }
       }
     }},
     {"name": "store_id", "type": {
