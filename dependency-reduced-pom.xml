@@ -186,6 +186,12 @@
       <version>2.17.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.22</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <properties>
     <flink.version>1.15.0</flink.version>

@@ -2,24 +2,18 @@ package com.cloudera.flink.ts.gen.connector;
 
 import be.cetic.tsimulus.config.Configuration;
 import com.cloudera.flink.ts.gen.connector.common.TimeSeriesGeneratorSourceOptions;
-import com.sun.mail.imap.IMAPFolder;
 import io.confluent.avro.random.generator.Generator;
-import jakarta.mail.Store;
 import org.apache.commons.io.FileUtils;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
-import org.apache.flink.table.catalog.Column;
-import org.apache.flink.table.catalog.ResolvedSchema;
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.table.types.DataType;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
     private final TimeSeriesGeneratorSourceOptions options;
