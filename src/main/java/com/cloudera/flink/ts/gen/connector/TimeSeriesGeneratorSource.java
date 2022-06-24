@@ -52,6 +52,15 @@ public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
     }
 
     private void init() throws Exception {
+
+        if(options.getSeed() != null) {
+            this.seed = options.getSeed();
+        }
+
+        if(options.getGeneration() != null) {
+            this.generation = options.getGeneration();
+        }
+
         String tsSchemaLocation = options.getTsSchemaLocation();
         String tsSchemaFileName = options.getTsSchemaFileName();
         String tsSchema = getSchema(tsSchemaLocation, tsSchemaFileName);
@@ -68,13 +77,6 @@ public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
                 .generation(generation)
                 .build();
 
-        if(options.getSeed() != null) {
-                this.seed = options.getSeed();
-        }
-
-        if(options.getGeneration() != null) {
-            this.generation = options.getGeneration();
-        }
     }
 
     private String getSchema(String schemaLocation, String schemaFileName) throws IOException {

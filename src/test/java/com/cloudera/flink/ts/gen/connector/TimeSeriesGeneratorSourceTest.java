@@ -30,7 +30,8 @@ public class TimeSeriesGeneratorSourceTest {
                         + "  'avro_schema_file_name' = 'transactions.avro',\n"
                         + "  'avro_schema_location' = '/Users/njayakumar/Desktop/ak/naga/workspace/demos/ts-gen-connector/src/main/resources/',\n"
                         + "  'ts_schema_file_name' = 'basicConfig.json',\n"
-                        + "  'ts_schema_location' = '/Users/njayakumar/Desktop/ak/naga/workspace/demos/ts-gen-connector/src/main/resources/' \n"
+                        + "  'ts_schema_location' = '/Users/njayakumar/Desktop/ak/naga/workspace/demos/ts-gen-connector/src/main/resources/', \n"
+                        + "  'generation' = '100'"
                         + ")");
 
         TableResult tableResult = tEnv.executeSql("SELECT * FROM server_logs");
