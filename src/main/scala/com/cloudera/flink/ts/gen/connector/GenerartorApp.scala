@@ -56,19 +56,7 @@ object GenerartorApp extends App {
       |    }
       |  ],
       |  "exported":[
-      |    {"name": "temperature", "generator": "generator1", "frequency": 6000},
-      |    {"name": "pressure", "generator": "monthly-basis", "frequency": 3000},
-      |    {"name": "torque", "generator": "generator2", "frequency": 6000},
-      |    {"name": "rpm", "generator": "daily-basis", "frequency": 3000},
-      |    {"name": "density", "generator": "generator1", "frequency": 6000},
-      |    {"name": "porosity", "generator": "daily-basis", "frequency": 3000},
-      |    {"name": "resistivity", "generator": "generator2", "frequency": 6000},
-      |    {"name": "crpm", "generator": "monthly-basis", "frequency": 3000},
-      |    {"name": "aprs", "generator": "daily-basis", "frequency": 6000},
-      |    {"name": "stor", "generator": "monthly-basis", "frequency": 3000},
-      |    {"name": "rpm", "generator": "generator1", "frequency": 6000},
-      |    {"name": "gamma", "generator": "generator2", "frequency": 1000},
-      |    {"name": "Attn", "generator": "generator1", "frequency": 2000}
+      |    {"name": "torque", "generator": "generator2", "frequency": 6000}
       |  ],
       |  "from": "2016-01-01 00:00:00.000",
       |  "to": "2017-12-31 23:59:59.999"
@@ -93,8 +81,9 @@ object GenerartorApp extends App {
     e => {
       val genericRecord = aGenerator.generate().asInstanceOf[GenericRecord]
       genericRecord.put(e._2, e._3)
-      println(DataGenUtil.toPrettyFormat(genericRecord.toString))
-      println(e._1 + ";" + dtf.print(e._1) + ";" + e._2 + ";" + e._3)
+      println(genericRecord)
+      //println(DataGenUtil.toPrettyFormat(genericRecord.toString))
+     // println(e._1 + ";" + dtf.print(e._1) + ";" + e._2 + ";" + e._3)
     }
   }
 

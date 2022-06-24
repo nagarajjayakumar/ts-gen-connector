@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.apache.flink.annotation.Internal;
 
+import javax.annotation.Nullable;
+
 import java.io.Serializable;
 
 @Internal
@@ -17,5 +19,8 @@ public class TimeSeriesGeneratorSourceOptions implements Serializable {
 
     private final String avroSchemaLocation;
     private final String avroSchemaFileName;
+
+    private final @Nullable Long seed;
+    private final @Nullable Long generation;
 
 }

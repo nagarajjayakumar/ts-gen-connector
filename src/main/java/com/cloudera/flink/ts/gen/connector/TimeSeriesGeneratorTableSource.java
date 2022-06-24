@@ -1,14 +1,12 @@
 package com.cloudera.flink.ts.gen.connector;
 
 import com.cloudera.flink.ts.gen.connector.common.TimeSeriesGeneratorSourceOptions;
-import org.apache.flink.table.catalog.Column;
 import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.connector.source.ScanTableSource;
 import org.apache.flink.table.connector.source.SourceFunctionProvider;
 import org.apache.flink.table.types.DataType;
 
-import java.util.List;
 import java.util.Map;
 
 public class TimeSeriesGeneratorTableSource implements ScanTableSource {

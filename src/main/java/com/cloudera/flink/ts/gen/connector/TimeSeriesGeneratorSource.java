@@ -22,8 +22,8 @@ public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
     private transient volatile Configuration tsSchemaConfiguration;
     private transient volatile Generator avroGenerator;
 
-    private transient volatile long seed = 100L;
-    private transient volatile long generation = 10000L;
+    private long seed = 100L;
+    private long generation = 10000L;
 
     private transient volatile boolean running = false;
 
@@ -67,6 +67,14 @@ public class TimeSeriesGeneratorSource extends RichSourceFunction<RowData> {
                 .schemaString(avroSchema).random(new Random(seed))
                 .generation(generation)
                 .build();
+
+        if(options.getSeed() != null) {
+                this.seed = options.getSeed();
+        }
+
+        if(options.getGeneration() != null) {
+            this.generation = options.getGeneration();
+        }
     }
 
     private String getSchema(String schemaLocation, String schemaFileName) throws IOException {

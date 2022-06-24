@@ -25,6 +25,10 @@ public class TimeSeriesGeneratorTableSourceFactory implements DynamicTableSource
     public static final ConfigOption<String> AVRO_SCHEMA_LOCATION = ConfigOptions.key("avro_schema_location").stringType().noDefaultValue();
     public static final ConfigOption<String> AVRO_SCHEMA_FILE_NAME = ConfigOptions.key("avro_schema_file_name").stringType().noDefaultValue();
 
+    public static final ConfigOption<Long> SEED = ConfigOptions.key("seed").longType().noDefaultValue();
+    public static final ConfigOption<Long> GENERATION = ConfigOptions.key("generation").longType().noDefaultValue();
+
+
     public static final List<LogicalTypeRoot> SUPPORTED_ROOT_TYPES =
             Arrays.asList(
                     LogicalTypeRoot.DOUBLE,
@@ -65,6 +69,8 @@ public class TimeSeriesGeneratorTableSourceFactory implements DynamicTableSource
     @Override
     public Set<ConfigOption<?>> optionalOptions() {
         final Set<ConfigOption<?>> options = new HashSet<>();
+        options.add(SEED);
+        options.add(GENERATION);
         return options;
     }
 
@@ -78,6 +84,8 @@ public class TimeSeriesGeneratorTableSourceFactory implements DynamicTableSource
                 .tsSchemaFileName(factoryHelper.getOptions().get(TS_SCHEMA_FILE_NAME))
                 .avroSchemaLocation(factoryHelper.getOptions().get(AVRO_SCHEMA_LOCATION))
                 .avroSchemaFileName(factoryHelper.getOptions().get(AVRO_SCHEMA_FILE_NAME))
+                .seed(factoryHelper.getOptions().get(SEED))
+                .generation(factoryHelper.getOptions().get(GENERATION))
                 .build();
 
         ResolvedSchema schema = ctx.getCatalogTable().getResolvedSchema();
