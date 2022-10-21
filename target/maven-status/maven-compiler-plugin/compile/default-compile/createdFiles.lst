@@ -1,8 +1,0 @@
-com/cloudera/flink/ts/gen/connector/common/TimeSeriesGeneratorSourceOptions.class
-com/cloudera/flink/ts/gen/connector/TimeSeriesGeneratorTableSource.class
-com/cloudera/flink/ts/gen/connector/utils/DataGenUtil.class
-com/cloudera/flink/ts/gen/connector/TimeSeriesGeneratorSource.class
-com/cloudera/flink/ts/gen/connector/TimeSeriesGeneratorTableSourceFactory.class
-com/cloudera/flink/ts/gen/connector/common/TimeSeriesGeneratorSourceOptions$TimeSeriesGeneratorSourceOptionsBuilder.class
-com/cloudera/flink/ts/gen/connector/common/TimeSeriesGeneratorSourceOptions$TimeSeriesGeneratorSourceOptionsBuilderImpl.class
-com/cloudera/flink/ts/gen/connector/common/TimeSeriesGeneratorSourceOptions$1.class
