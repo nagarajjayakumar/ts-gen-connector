@@ -1,0 +1,30 @@
+{
+  "namespace": "datagen.sensor",
+  "name": "sensor",
+  "type": "record",
+  "fields": [
+    {"name": "id", "type": {
+      "type": "long",
+      "arg.properties": {
+        "iteration": {
+          "start": 1
+        }
+      }
+    }},
+    {"name": "sensor_id", "type": {
+      "type": "string",
+      "arg.properties": {
+        "regex": "torque_sensor_[1-9]"
+      }
+    }},
+    {"name": "torque", "type": {
+      "type": "long",
+      "arg.properties": {
+        "iteration": {
+          "start": 1
+        }
+      }
+    }}
+  ]
+}
+

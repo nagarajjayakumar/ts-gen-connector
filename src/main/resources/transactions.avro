@@ -32,6 +32,12 @@
         "iteration": { "start": 1 }
       }
     }},
+    {"name": "ts_timestamp", "type": {
+      "type": "long",
+      "arg.properties": {
+        "iteration": { "start": 1 }
+      }
+    }},
     {"name": "store_id", "type": {
       "type": "long",
       "arg.properties": {

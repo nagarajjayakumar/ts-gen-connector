@@ -58,14 +58,14 @@ object GenerartorApp extends App {
       |  "exported":[
       |    {"name": "torque", "generator": "generator2", "frequency": 6000}
       |  ],
-      |  "from": "2016-01-01 00:00:00.000",
-      |  "to": "2017-12-31 23:59:59.999"
+      |  "from": "2022-01-01 00:00:00.000",
+      |  "to": "2022-12-31 23:59:59.999"
       |}""".stripMargin
 
   val dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS")
 
   val classloader = Thread.currentThread.getContextClassLoader
-  val inputStream = classloader.getResourceAsStream("transactions.avro")
+  val inputStream = classloader.getResourceAsStream("sensor.avro")
   val aContent: String = IOUtils.toString(inputStream, StandardCharsets.UTF_8)
 
   val aGenerator = new Generator.Builder()
@@ -80,6 +80,7 @@ object GenerartorApp extends App {
   Utils.generate(Utils.config2Results(config)) foreach {
     e => {
       val genericRecord = aGenerator.generate().asInstanceOf[GenericRecord]
+      println(e)
       genericRecord.put(e._2, e._3)
       println(genericRecord)
       //println(DataGenUtil.toPrettyFormat(genericRecord.toString))

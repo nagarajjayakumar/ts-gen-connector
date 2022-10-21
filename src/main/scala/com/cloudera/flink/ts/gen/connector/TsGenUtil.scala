@@ -2,6 +2,7 @@ package com.cloudera.flink.ts.gen.connector
 
 import be.cetic.tsimulus.Utils
 import be.cetic.tsimulus.config.Configuration
+import com.github.nscala_time.time.Imports
 import com.github.nscala_time.time.Imports.DateTimeFormat
 import io.confluent.avro.random.generator.Generator
 import org.apache.avro.generic.GenericRecord
@@ -12,6 +13,7 @@ import org.apache.flink.table.types.DataType
 import org.apache.flink.table.types.logical.LogicalTypeRoot
 import spray.json._
 
+import java.sql.Timestamp
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
 import java.time.{Instant, ZoneId}
@@ -91,6 +93,7 @@ object TsGenUtil extends Serializable {
       e => {
         val row = new GenericRowData(physicalColumnNameToDataTypeMap.size)
         val genericRecord = aGenerator.generate.asInstanceOf[GenericRecord]
+        genericRecord.put("ts_timestamp", e._1.toDateTime.getMillis)
         genericRecord.put(e._2, e._3)
 
         physicalColumnNameToDataTypeMap.asScala.zipWithIndex.foreach {
