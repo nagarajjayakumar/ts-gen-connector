@@ -48,6 +48,7 @@ object TsGenUtil extends Serializable {
       e => {
         val row = new GenericRowData(columns.size)
         val genericRecord = aGenerator.generate().asInstanceOf[GenericRecord]
+        genericRecord.put("ts_timestamp", e._1.toDateTime.getMillis)
         genericRecord.put(e._2, e._3)
 
         columns.asScala.zipWithIndex.foreach {

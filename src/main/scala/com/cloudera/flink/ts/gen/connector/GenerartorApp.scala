@@ -65,7 +65,7 @@ object GenerartorApp extends App {
   val dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS")
 
   val classloader = Thread.currentThread.getContextClassLoader
-  val inputStream = classloader.getResourceAsStream("sensor.avro")
+  val inputStream = classloader.getResourceAsStream("transactions.avro")
   val aContent: String = IOUtils.toString(inputStream, StandardCharsets.UTF_8)
 
   val aGenerator = new Generator.Builder()
@@ -81,6 +81,7 @@ object GenerartorApp extends App {
     e => {
       val genericRecord = aGenerator.generate().asInstanceOf[GenericRecord]
       println(e)
+      genericRecord.put("ts_timestamp", e._1.toDateTime.getMillis)
       genericRecord.put(e._2, e._3)
       println(genericRecord)
       //println(DataGenUtil.toPrettyFormat(genericRecord.toString))
