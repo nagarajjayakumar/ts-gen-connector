@@ -1,0 +1,50 @@
+{
+  "namespace": "datagen.heartrate",
+  "name": "heartrate",
+  "type": "record",
+  "fields": [
+    {"name": "pharma_row_id", "type": {
+      "type": "long",
+      "arg.properties": {
+        "iteration": {
+          "start": 1
+        }
+      }
+    }},
+    {"name": "msg_type", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "heartrate"
+        ]
+      }
+    }},
+    {"name": "user_id", "type": {
+      "type": "string",
+      "arg.properties": {
+        "regex": "User_[4-9]"
+      }
+    }},
+    {"name": "patch_id", "type": {
+      "type": "string",
+      "arg.properties": {
+        "regex": "patch_[1-3]"
+      }
+    }},
+    {"name": "ts_timestamp", "type": {
+      "type": "long",
+      "arg.properties": {
+        "iteration": { "start": 1 }
+      }
+    }},
+    {"name": "beats_per_minute", "type": {
+      "type": "long",
+      "arg.properties": {
+        "iteration": {
+          "start": 1
+        }
+      }
+    }}
+  ]
+}
+
