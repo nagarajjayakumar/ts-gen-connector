@@ -62,42 +62,48 @@ Deployment - Notes
 ===================
 
 ```
-kafka-topics --create --topic patchpair-events --bootstrap-server cdp.44.206.13.121.nip.io:9092
-
-kafka-topics --describe --topic patchpair-events --bootstrap-server cdp.44.206.13.121.nip.io:9092
-
-kafka-topics --bootstrap-server=cdp.44.206.13.121.nip.io:9092 --list
-
-kafka-topics --bootstrap-server=cdp.44.206.13.121.nip.io:9092 --describe --topic patchpair-events
-
 ssh -i workshop.pem centos@44.206.13.121
 
 
-kafka-console-consumer --bootstrap-server cdp.54.161.94.194.nip.io:9092 --topic iot_enriched --from-beginning
+kafka-topics --create --topic heartrate-test-events --bootstrap-server 52.206.57.10:9092
+
+kafka-topics --bootstrap-server=52.206.57.10:9092 --list
+
+kafka-topics --bootstrap-server=52.206.57.10:9092 --describe --topic heartrate-test-events
+
+kafka-console-consumer  --bootstrap-server=52.206.57.10:9092 --topic heartrate-test-events --from-beginning
 
 
-CREATE TABLE patchpair_events (
-`transaction_id` BIGINT,
-`card_id` BIGINT,
-`user_id` VARCHAR,
-`purchase_id` BIGINT,
-`store_id` BIGINT,
-`torque` DOUBLE,
-PRIMARY KEY (transaction_id) NOT ENFORCED
+
+CREATE TABLE heartrate_test_events (
+ msg_yr bigint,
+ pharma_row_id BIGINT,
+ msg_type STRING,
+ user_id STRING,
+ patch_id STRING,
+ ts_timestamp BIGINT,
+ acquisition_timestamp timestamp,
+ beats_per_minute DOUBLE,
+ msg_dt string,
+ msg_mth string,
+ ingest_ts timestamp, 
+ PRIMARY KEY (pharma_row_id) NOT ENFORCED
 ) WITH (
-'connector' = 'upsert-kafka',
-'property-version' = 'universal',
-'properties.bootstrap.servers' = 'cdp.54.161.94.194.nip.io:9092',
-'topic' = 'iot_enriched',
-'value.format' = 'json',
-'key.format' = 'json',
-'properties.group.id' = 'my-working-group'
+  'connector' = 'upsert-kafka',
+  'property-version' = 'universal',
+  'properties.bootstrap.servers' = '52.206.57.10:9092',
+  'topic' = 'heartrate-test-events',
+  'value.format' = 'json',
+  'key.format' = 'json',
+  'properties.group.id' = 'heartrate-test-working-group'
 );
 
 ```
 
 
 ```
+FLINK SQL - For streaming data to KAFKA SINK
+
 SET 'table.local-time-zone' = 'UTC';
 
 
